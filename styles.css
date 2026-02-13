@@ -1,0 +1,130 @@
+/* ================================
+   GLOBAL STYLES
+================================ */
+
+/* Reset default browser spacing */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body styling */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* ================================
+   MAIN CONTAINER
+================================ */
+
+.container {
+    background: white;
+    width: 400px;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+}
+
+/* Title styling */
+.container h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* ================================
+   INPUT SECTION
+================================ */
+
+.input-section {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+/* Task input field */
+#taskInput {
+    flex: 1;
+    padding: 10px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+/* Input focus effect */
+#taskInput:focus {
+    border-color: #667eea;
+    outline: none;
+}
+
+/* Add button */
+#addTaskBtn {
+    padding: 10px 15px;
+    border: none;
+    background-color: #667eea;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+/* Button hover effect */
+#addTaskBtn:hover {
+    background-color: #5563c1;
+}
+
+/* ================================
+   TASK LIST
+================================ */
+
+#taskList {
+    list-style: none;
+}
+
+/* Each task item */
+.task-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f4f6fb;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    transition: 0.3s;
+}
+
+/* Completed task style */
+.task-item.completed span {
+    text-decoration: line-through;
+    color: gray;
+}
+
+/* Task text */
+.task-item span {
+    cursor: pointer;
+    flex: 1;
+}
+
+/* Delete button */
+.delete-btn {
+    background: crimson;
+    border: none;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: 0.3s;
+}
+
+/* Delete hover effect */
+.delete-btn:hover {
+    background: darkred;
+}
