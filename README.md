@@ -26,13 +26,6 @@ This project is a hands-on laboratory for mastering the following DevOps and dev
 * **CSS3:** Custom styling and layout.
 * **JavaScript:** Vanilla JS for logic (No frameworks).
 
----
-
-
-It looks like some of the formatting got bunched together! Here is that content cleaned up and structured into a professional, easy-to-read Markdown format for your `README.md`.
-
----
-
 ## 📂 Project Structure
 
 ```text
