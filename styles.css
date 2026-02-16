@@ -45,7 +45,7 @@ body {
 .input-section {
     display: flex;
     gap: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 12px;
 }
 
 /* Task input field */
@@ -81,6 +81,33 @@ body {
 }
 
 /* ================================
+   FILTER SECTION
+================================ */
+
+.filter-section {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.filter-btn {
+    flex: 1;
+    border: 1px solid #d8def8;
+    background: #f4f6fb;
+    color: #333;
+    border-radius: 6px;
+    padding: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.filter-btn.active {
+    background: #667eea;
+    border-color: #667eea;
+    color: white;
+}
+
+/* ================================
    TASK LIST
 ================================ */
 
@@ -110,6 +137,24 @@ body {
 .task-item span {
     cursor: pointer;
     flex: 1;
+}
+
+/* Complete button */
+.complete-btn {
+    background: #28a745;
+    border: none;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: 0.3s;
+    margin-right: 5px;
+}
+
+/* Complete button hover effect */
+.complete-btn:hover {
+    background: #218838;
 }
 
 /* Delete button */
