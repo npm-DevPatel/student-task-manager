@@ -11,6 +11,10 @@ const addTaskBtn = document.getElementById("addTaskBtn");
 // Get task list container
 const taskList = document.getElementById("taskList");
 
+// Get date  value
+const dateInput = document.getElementById("dateInput");
+
+
 
 // ================================
 // ADD TASK FUNCTION
@@ -20,6 +24,9 @@ function addTask() {
 
     // Get the text entered by the user
     const taskText = taskInput.value.trim();
+
+    // Get the date entered by the user
+    const dueDate = dateInput.value;
 
     // Prevent adding empty tasks
     if (taskText === "") {
@@ -32,10 +39,21 @@ function addTask() {
 
     // Add class for styling
     li.classList.add("task-item");
+    
+    //Create a container to store and display task information (text and due date)
+    const taskDetails = document.createElement("div");
+    taskDetails.classList.add("task-info");
 
     // Create span to hold task text
     const span = document.createElement("span");
-    span.textContent = taskText;
+    span.textContent = taskText;    
+
+    //Create a small element for the date 
+    const dateDisplay = document.createElement("small");
+    dateDisplay.classList.add("due-date");
+    dateDisplay.textContent = dueDate ? `Due: ${dueDate}` : "No date";
+    taskDetails.appendChild(span);
+    taskDetails.appendChild(dateDisplay);
 
     // Toggle completed class when clicking task text
     span.addEventListener("click", function () {
@@ -52,8 +70,8 @@ function addTask() {
         taskList.removeChild(li);
     });
 
-    // Append span and button inside list item
-    li.appendChild(span);
+    // Add details container and the delete button
+    li.appendChild(taskDetails);
     li.appendChild(deleteBtn);
 
     // Add the new task to the list
@@ -61,6 +79,7 @@ function addTask() {
 
     // Clear input field after adding task
     taskInput.value = "";
+    dateInput.value = "";
 }
 
 
