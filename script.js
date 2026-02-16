@@ -1,34 +1,133 @@
 // ================================
-// SELECTING ELEMENTS FROM DOM
+// SELECT DOM ELEMENTS
 // ================================
 
-// Get input field
 const taskInput = document.getElementById("taskInput");
-
-// Get add button
-const addTaskBtn = document.getElementById("addTaskBtn");
-
-// Get task list container
-const taskList = document.getElementById("taskList");
-
-// Get filter buttons
-const filterButtons = document.querySelectorAll(".filter-btn");
-
-// Get date value
 const dateInput = document.getElementById("dateInput");
+const addTaskBtn = document.getElementById("addTaskBtn");
+const taskList = document.getElementById("taskList");
+const filterButtons = document.querySelectorAll(".filter-btn");
+const darkModeToggle = document.getElementById("darkModeToggle");
 
-// Track the active filter
 let currentFilter = "all";
 
+// ================================
+// LOCAL STORAGE FUNCTIONS
+// ================================
+
+// Save all tasks to localStorage
+function saveTasks() {
+    const tasks = [];
+
+    document.querySelectorAll(".task-item").forEach(task => {
+        tasks.push({
+            text: task.querySelector("span").textContent,
+            date: task.querySelector(".due-date").textContent.replace("Due: ", ""),
+            completed: task.classList.contains("completed")
+        });
+    });
+
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+// Load tasks from localStorage on page load
+function loadTasks() {
+    const savedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+    savedTasks.forEach(task => {
+        createTask(task.text, task.date === "No date" ? "" : task.date, task.completed);
+    });
+}
 
 // ================================
-// FILTER FUNCTION
+// CREATE TASK FUNCTION (Reusable)
+// ================================
+
+function createTask(text, dueDate, completed = false) {
+
+    const li = document.createElement("li");
+    li.classList.add("task-item");
+    if (completed) li.classList.add("completed");
+
+    const taskDetails = document.createElement("div");
+    taskDetails.classList.add("task-info");
+
+    const span = document.createElement("span");
+    span.textContent = text;
+
+    const dateDisplay = document.createElement("small");
+    dateDisplay.classList.add("due-date");
+    dateDisplay.textContent = dueDate ? `Due: ${dueDate}` : "No date";
+
+    taskDetails.appendChild(span);
+    taskDetails.appendChild(dateDisplay);
+
+    span.addEventListener("click", () => {
+        li.classList.toggle("completed");
+        saveTasks();
+        applyFilter();
+    });
+
+    const completeBtn = document.createElement("button");
+    completeBtn.textContent = "Complete";
+    completeBtn.classList.add("complete-btn");
+
+    completeBtn.addEventListener("click", () => {
+        li.classList.add("completed");
+        saveTasks();
+        applyFilter();
+    });
+
+    const deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "Delete";
+    deleteBtn.classList.add("delete-btn");
+
+    deleteBtn.addEventListener("click", () => {
+        li.remove();
+        saveTasks();
+        applyFilter();
+    });
+
+    li.appendChild(taskDetails);
+    li.appendChild(completeBtn);
+    li.appendChild(deleteBtn);
+
+    taskList.appendChild(li);
+    applyFilter();
+}
+
+// ================================
+// ADD TASK
+// ================================
+
+function addTask() {
+    const taskText = taskInput.value.trim();
+    const dueDate = dateInput.value;
+
+    if (taskText === "") {
+        alert("Please enter a task.");
+        return;
+    }
+
+    createTask(taskText, dueDate);
+    saveTasks();
+
+    taskInput.value = "";
+    dateInput.value = "";
+}
+
+addTaskBtn.addEventListener("click", addTask);
+
+taskInput.addEventListener("keypress", function (event) {
+    if (event.key === "Enter") addTask();
+});
+
+// ================================
+// FILTERING
 // ================================
 
 function applyFilter() {
-    const tasks = taskList.querySelectorAll(".task-item");
-
-    tasks.forEach(function (task) {
+    document.querySelectorAll(".task-item").forEach(task => {
         const isCompleted = task.classList.contains("completed");
 
         if (currentFilter === "all") {
@@ -41,115 +140,35 @@ function applyFilter() {
     });
 }
 
-
-// ================================
-// ADD TASK FUNCTION
-// ================================
-
-function addTask() {
-
-    // Get the text entered by the user
-    const taskText = taskInput.value.trim();
-
-    // Get the date entered by the user
-    const dueDate = dateInput.value;
-
-    // Prevent adding empty tasks
-    if (taskText === "") {
-        alert("Please enter a task.");
-        return;
-    }
-
-    // Create new list item (li)
-    const li = document.createElement("li");
-
-    // Add class for styling
-    li.classList.add("task-item");
-
-    // Create a container to store and display task information (text and due date)
-    const taskDetails = document.createElement("div");
-    taskDetails.classList.add("task-info");
-
-    // Create span to hold task text
-    const span = document.createElement("span");
-    span.textContent = taskText;
-
-    // Create a small element for the date
-    const dateDisplay = document.createElement("small");
-    dateDisplay.classList.add("due-date");
-    dateDisplay.textContent = dueDate ? `Due: ${dueDate}` : "No date";
-    taskDetails.appendChild(span);
-    taskDetails.appendChild(dateDisplay);
-
-    // Toggle completed class when clicking task text
-    span.addEventListener("click", function () {
-        li.classList.toggle("completed");
-        applyFilter();
-    });
-
-    // Create complete button
-    const completeBtn = document.createElement("button");
-    completeBtn.textContent = "Complete";
-    completeBtn.classList.add("complete-btn");
-
-    // Mark task as completed when complete button is clicked
-    completeBtn.addEventListener("click", function () {
-        li.classList.add("completed");
-        applyFilter();
-    });
-
-    // Create delete button
-    const deleteBtn = document.createElement("button");
-    deleteBtn.textContent = "Delete";
-    deleteBtn.classList.add("delete-btn");
-
-    // Remove task when delete button is clicked
-    deleteBtn.addEventListener("click", function () {
-        taskList.removeChild(li);
-        applyFilter();
-    });
-
-    // Add details container and action buttons
-    li.appendChild(taskDetails);
-    li.appendChild(completeBtn);
-    li.appendChild(deleteBtn);
-
-    // Add the new task to the list
-    taskList.appendChild(li);
-
-    // Ensure newly added task respects active filter
-    applyFilter();
-
-    // Clear input fields after adding task
-    taskInput.value = "";
-    dateInput.value = "";
-}
-
-
-// ================================
-// EVENT LISTENERS
-// ================================
-
-// Add task when button is clicked
-addTaskBtn.addEventListener("click", addTask);
-
-// Also allow pressing "Enter" key to add task
-taskInput.addEventListener("keypress", function (event) {
-    if (event.key === "Enter") {
-        addTask();
-    }
-});
-
-// Switch filters
-filterButtons.forEach(function (button) {
-    button.addEventListener("click", function () {
+filterButtons.forEach(button => {
+    button.addEventListener("click", () => {
         currentFilter = button.dataset.filter;
 
-        filterButtons.forEach(function (btn) {
-            btn.classList.remove("active");
-        });
-
+        filterButtons.forEach(btn => btn.classList.remove("active"));
         button.classList.add("active");
+
         applyFilter();
     });
 });
+
+// ================================
+// DARK MODE
+// ================================
+
+darkModeToggle.addEventListener("click", () => {
+    document.body.classList.toggle("dark");
+
+    // Save preference
+    localStorage.setItem("darkMode", document.body.classList.contains("dark"));
+});
+
+// Load dark mode preference
+if (localStorage.getItem("darkMode") === "true") {
+    document.body.classList.add("dark");
+}
+
+// ================================
+// INITIAL LOAD
+// ================================
+
+loadTasks();

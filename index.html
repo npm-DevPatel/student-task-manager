@@ -14,18 +14,16 @@
     <!-- Main App Container -->
     <div class="container">
 
-        <!-- App Title -->
-        <h1>Student Task Manager</h1>
+        <!-- Top Bar (Title + Dark Mode Toggle) -->
+        <div class="top-bar">
+            <h1>Student Task Manager</h1>
+            <button id="darkModeToggle">🌙</button>
+        </div>
 
         <!-- Input Section -->
         <div class="input-section">
-            <!-- Text input where user types task -->
             <input type="text" id="taskInput" placeholder="Enter a new task...">
-
-            <!--Allows the user to select a due date when creating a task-->
-            <input type = "date" id="dateInput">
-
-            <!-- Button to add task -->
+            <input type="date" id="dateInput">
             <button id="addTaskBtn">Add</button>
         </div>
 
@@ -37,12 +35,10 @@
         </div>
 
         <!-- Task List -->
-        <!-- Tasks will be dynamically inserted here using JavaScript -->
         <ul id="taskList"></ul>
 
     </div>
 
-    <!-- Link external JavaScript file -->
     <script src="script.js"></script>
 </body>
 </html>
