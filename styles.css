@@ -59,11 +59,18 @@ body {
 }
 
 #taskInput,
-#dateInput {
+#dateInput,
+.priority-input {
     flex: 1;
     padding: 8px;
     border: 2px solid #ddd;
     border-radius: 6px;
+}
+
+.priority-input {
+    min-width: 90px;
+    flex: 0.8;
+    cursor: pointer;
 }
 
 #addTaskBtn {
@@ -115,12 +122,55 @@ body {
     padding: 10px;
     margin-bottom: 10px;
     border-radius: 6px;
+    border-left: 4px solid #667eea;
+    transition: all 0.2s ease;
+}
+
+.task-item.priority-high {
+    border-left-color: #dc3545;
+    background: #ffe5e5;
+}
+
+.task-item.priority-medium {
+    border-left-color: #ffc107;
+    background: #fff8e5;
+}
+
+.task-item.priority-low {
+    border-left-color: #28a745;
+    background: #e5f5e5;
 }
 
 .task-info {
     display: flex;
     flex-direction: column;
     flex: 1;
+    gap: 4px;
+}
+
+.priority-badge {
+    font-size: 0.65rem;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 3px;
+    width: fit-content;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.priority-badge[data-priority="high"] {
+    background: #dc3545;
+    color: white;
+}
+
+.priority-badge[data-priority="medium"] {
+    background: #ffc107;
+    color: #333;
+}
+
+.priority-badge[data-priority="low"] {
+    background: #28a745;
+    color: white;
 }
 
 .due-date {
@@ -170,8 +220,21 @@ body.dark .task-item {
     background: #3a3f44;
 }
 
+body.dark .task-item.priority-high {
+    background: #543535;
+}
+
+body.dark .task-item.priority-medium {
+    background: #544835;
+}
+
+body.dark .task-item.priority-low {
+    background: #354535;
+}
+
 body.dark #taskInput,
-body.dark #dateInput {
+body.dark #dateInput,
+body.dark .priority-input {
     background: #3a3f44;
     color: white;
     border: 1px solid #555;

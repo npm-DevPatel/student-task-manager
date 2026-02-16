@@ -4,6 +4,7 @@
 
 const taskInput = document.getElementById("taskInput");
 const dateInput = document.getElementById("dateInput");
+const priorityInput = document.getElementById("priorityInput");
 const addTaskBtn = document.getElementById("addTaskBtn");
 const taskList = document.getElementById("taskList");
 const filterButtons = document.querySelectorAll(".filter-btn");
@@ -20,9 +21,11 @@ function saveTasks() {
     const tasks = [];
 
     document.querySelectorAll(".task-item").forEach(task => {
+        const priorityBadge = task.querySelector(".priority-badge");
         tasks.push({
             text: task.querySelector("span").textContent,
             date: task.querySelector(".due-date").textContent.replace("Due: ", ""),
+            priority: priorityBadge ? priorityBadge.dataset.priority : "medium",
             completed: task.classList.contains("completed")
         });
     });
@@ -35,7 +38,7 @@ function loadTasks() {
     const savedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
     savedTasks.forEach(task => {
-        createTask(task.text, task.date === "No date" ? "" : task.date, task.completed);
+        createTask(task.text, task.date === "No date" ? "" : task.date, task.completed, task.priority || "medium");
     });
 }
 
@@ -43,10 +46,11 @@ function loadTasks() {
 // CREATE TASK FUNCTION (Reusable)
 // ================================
 
-function createTask(text, dueDate, completed = false) {
+function createTask(text, dueDate, completed = false, priority = "medium") {
 
     const li = document.createElement("li");
     li.classList.add("task-item");
+    li.classList.add(`priority-${priority}`);
     if (completed) li.classList.add("completed");
 
     const taskDetails = document.createElement("div");
@@ -55,12 +59,18 @@ function createTask(text, dueDate, completed = false) {
     const span = document.createElement("span");
     span.textContent = text;
 
+    const priorityBadge = document.createElement("span");
+    priorityBadge.classList.add("priority-badge");
+    priorityBadge.dataset.priority = priority;
+    priorityBadge.textContent = priority.charAt(0).toUpperCase() + priority.slice(1);
+
     const dateDisplay = document.createElement("small");
     dateDisplay.classList.add("due-date");
     dateDisplay.textContent = dueDate ? `Due: ${dueDate}` : "No date";
 
     taskDetails.appendChild(span);
     taskDetails.appendChild(dateDisplay);
+    taskDetails.appendChild(priorityBadge);
 
     span.addEventListener("click", () => {
         li.classList.toggle("completed");
@@ -103,17 +113,19 @@ function createTask(text, dueDate, completed = false) {
 function addTask() {
     const taskText = taskInput.value.trim();
     const dueDate = dateInput.value;
+    const priority = priorityInput.value;
 
     if (taskText === "") {
         alert("Please enter a task.");
         return;
     }
 
-    createTask(taskText, dueDate);
+    createTask(taskText, dueDate, false, priority);
     saveTasks();
 
     taskInput.value = "";
     dateInput.value = "";
+    priorityInput.value = "medium";
 }
 
 addTaskBtn.addEventListener("click", addTask);
